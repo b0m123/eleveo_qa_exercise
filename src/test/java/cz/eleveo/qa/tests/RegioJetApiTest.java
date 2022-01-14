@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -25,16 +26,44 @@ public class RegioJetApiTest extends BaseApiTestClass {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(RegioJetApiTest.class);
 
-  private static final String DEPARTURE_CITY_CODE = "10202002"; // BRNO
-  private static final String ARRIVAL_CITY_CODE = "10202000"; // OSTRAVA
+  private static final String DEPARTURE_CITY = "Brno";
+  private static final String ARRIVAL_CITY = "Ostrava";
   private static final LocalDate DEPARTURE_TIME =
       LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY));
-  private static final String REGIO_JET_GET_ROUTES_API_ENDPOINT =
-      String.format(
-          "/restapi/routes/search/simple?tariffs=REGULAR&toLocationType=CITY&toLocationId=%s&fromLocationType=CITY&fromLocationId=%s&departureDate=%s",
-          ARRIVAL_CITY_CODE,
-          DEPARTURE_CITY_CODE,
-          DEPARTURE_TIME.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+  private static String regioJetGetRoutesApiEndpoint = "";
+
+  @BeforeAll
+  public static void precondition() {
+
+    var response =
+        when().get("/restapi/consts/locations").then().statusCode(200).extract().response();
+
+    var departureCityCode =
+        response
+            .getBody()
+            .jsonPath()
+            .get(
+                "find { it -> it.code == 'CZ' }.cities.find { it -> it.name == '"
+                    + DEPARTURE_CITY
+                    + "'}.id")
+            .toString();
+    var arrivalCityCode =
+        response
+            .body()
+            .jsonPath()
+            .get(
+                "find { it -> it.code == 'CZ' }.cities.find { it -> it.name == '"
+                    + ARRIVAL_CITY
+                    + "'}.id")
+            .toString();
+
+    regioJetGetRoutesApiEndpoint =
+        String.format(
+            "/restapi/routes/search/simple?tariffs=REGULAR&toLocationType=CITY&toLocationId=%s&fromLocationType=CITY&fromLocationId=%s&departureDate=%s",
+            arrivalCityCode,
+            departureCityCode,
+            DEPARTURE_TIME.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+  }
 
   @Test
   @DisplayName("Find fastest arrival time connection")
@@ -42,7 +71,7 @@ public class RegioJetApiTest extends BaseApiTestClass {
     List<RouteResponsePojo> list =
         new ArrayList<>(
             when()
-                .get(REGIO_JET_GET_ROUTES_API_ENDPOINT)
+                .get(regioJetGetRoutesApiEndpoint)
                 .then()
                 .statusCode(200)
                 .body("routes", not(emptyArray()))
@@ -80,7 +109,7 @@ public class RegioJetApiTest extends BaseApiTestClass {
     List<RouteResponsePojo> list =
         new ArrayList<>(
             when()
-                .get(REGIO_JET_GET_ROUTES_API_ENDPOINT)
+                .get(regioJetGetRoutesApiEndpoint)
                 .then()
                 .statusCode(200)
                 .body("routes", not(emptyArray()))
@@ -118,7 +147,7 @@ public class RegioJetApiTest extends BaseApiTestClass {
     List<RouteResponsePojo> list =
         new ArrayList<>(
             when()
-                .get(REGIO_JET_GET_ROUTES_API_ENDPOINT)
+                .get(regioJetGetRoutesApiEndpoint)
                 .then()
                 .statusCode(200)
                 .body("routes", not(emptyArray()))

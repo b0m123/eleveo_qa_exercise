@@ -42,7 +42,7 @@ public class ResultsPage {
     allConnections.sort(Comparator.comparing(ConnectionCard::getDuration));
     LOGGER.info("SHORTEST TIME SPENT connection is: {} ", allConnections.get(0));
     allConnections.get(0).getPriceButton().scrollTo().should(Condition.enabled).click();
-    allConnections.get(0).getPriceButton().scrollTo().should(Condition.disappear);
+    allConnections.get(0).getPriceButton().should(Condition.disappear);
     return page(new SeatSelectionPage(allConnections.get(0)));
   }
 
@@ -52,7 +52,7 @@ public class ResultsPage {
     allConnections.sort(Comparator.comparing(ConnectionCard::getJourneyPriceCzk));
     LOGGER.info("CHEAPEST connection is: {} ", allConnections.get(0));
     allConnections.get(0).getPriceButton().scrollTo().should(Condition.enabled).click();
-    allConnections.get(0).getPriceButton().scrollTo().should(Condition.disappear);
+    allConnections.get(0).getPriceButton().should(Condition.disappear);
     return page(new SeatSelectionPage(allConnections.get(0)));
   }
 
@@ -62,7 +62,7 @@ public class ResultsPage {
     allConnections.sort(Comparator.comparing(ConnectionCard::getArrivalTime));
     LOGGER.info("FASTEST ARRIVAL TIME connection is: {} ", allConnections.get(0));
     allConnections.get(0).getPriceButton().scrollTo().should(Condition.enabled).click();
-    allConnections.get(0).getPriceButton().scrollTo().should(Condition.disappear);
+    allConnections.get(0).getPriceButton().should(Condition.disappear);
     return page(new SeatSelectionPage(allConnections.get(0)));
   }
 
