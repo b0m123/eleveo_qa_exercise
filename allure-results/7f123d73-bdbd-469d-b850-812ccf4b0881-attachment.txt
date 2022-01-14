@@ -1,4 +1,0 @@
-Travel by [BUS], 
-Departure at: 2022-01-17 02:00, Arrival at: 2022-01-17 04:05, Duration: 02:05 h, 
-Price from: 255 CZK, 
-Number of stops: through direction
