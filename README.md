@@ -16,7 +16,7 @@ Tech stack:
 
 ## Prerequisites
 Java 11 or newer
-Google Chrome
+<br>Google Chrome
 
 ## How to run it
 ### Unix
