@@ -1,0 +1,4 @@
+Travel by [TRAIN], 
+Departure at: 2022-01-17 19:02, Arrival at: 2022-01-17 21:14, Duration: 02:12 h, 
+Price from: 119 CZK, 
+Number of stops: through direction
