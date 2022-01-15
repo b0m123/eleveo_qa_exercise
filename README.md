@@ -53,5 +53,5 @@ gradlew.bat shadowJar
 ##  Execute tests by JAR
 You can execute tests using command:
 ```
-java -jar /build/libs/exercise.jar
+java -jar build/libs/exercise-all.jar
 ```
